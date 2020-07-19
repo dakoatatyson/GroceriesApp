@@ -1,121 +1,37 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Groceries
-    </ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-item-sliding>
+    <ion-item-sliding *ngFor="let item of items let i = index">
       <ion-item>
         <ion-grid>
           <ion-row>
             <ion-col>
-              <div class="grocery-item">Bread</div>
+              <h2>{{item.name}}</h2>
             </ion-col>
             <ion-col>
-              <div class="grocery-quantity">2</div>
+              <h2>{{item.quantity}}</h2>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option (click)="remove(item)" color="danger">
-          <ion-icon name="trash-sharp" size="large"></ion-icon>
-          DELETE
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-
-    <ion-item-sliding>
-      <ion-item>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <div class="grocery-item">Milk</div>
-            </ion-col>
-            <ion-col>
-              <div class="grocery-item">1</div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-
-      <ion-item-options side="end">
-        <ion-item-option (click)="remove(item)" color="danger">
-          <ion-icon name="trash-sharp" size="large"></ion-icon>
-          DELETE
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-
-    <ion-item-sliding>
-      <ion-item>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <div class="grocery-item">Butter Tub</div>
-            </ion-col>
-            <ion-col>
-              <div class="grocery-item">1</div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-
-      <ion-item-options side="end">
-        <ion-item-option (click)="remove(item)" color="danger">
-          <ion-icon name="trash-sharp" size="large"></ion-icon>
-          DELETE
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-
-    <ion-item-sliding>
-      <ion-item>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <div class="grocery-item">Tomatos</div>
-            </ion-col>
-            <ion-col>
-              <div class="grocery-item">4</div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-
-      <ion-item-options side="end">
-        <ion-item-option (click)="remove(item)" color="danger">
-          <ion-icon name="trash-sharp" size="large"></ion-icon>
-          DELETE
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-
-    <ion-item-sliding>
-      <ion-item>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <div class="grocery-item">Onion</div>
-            </ion-col>
-            <ion-col>
-              <div class="grocery-item">3</div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-
-      <ion-item-options side="end">
-        <ion-item-option (click)="remove(item)" color="danger">
+        <ion-item-option (click)="removeItem(item, i)" color="danger">
           <ion-icon name="trash-sharp" size="large"></ion-icon>
           DELETE
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button (click)="addItem()">
+      <ion-icon size="large" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
