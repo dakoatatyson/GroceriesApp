@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { GroceriesService } from '../groceries.service';
 
 @Component({
   selector: 'app-tab1',
@@ -10,26 +11,16 @@ import { AlertController } from '@ionic/angular';
 export class Tab1Page {
   title = "Grocery List";
 
-  items = [
-    {
-      name: "Milk",
-      quantity: 1
-    },
-    {
-      name: "Bread",
-      quantity: 2
-    },
-    {
-      name: "Bannana",
-      quantity: 3
-    },
-    {
-      name: "Sugar",
-      quantity: 1
-    }
-  ];
+  constructor(public toastController: ToastController, public alertController: AlertController, public groceries:GroceriesService) {}
 
-  constructor(public toastController: ToastController, public alertController: AlertController) {}
+  loadItems() {
+    return this.groceries.getItems();
+  }
+  
+  noItems() {
+    console.log(this.loadItems().length === 0);
+    return this.loadItems().length === 0;
+  }
 
   async presentToast(toastMessage) {
     const toast = await this.toastController.create({
@@ -40,7 +31,7 @@ export class Tab1Page {
     toast.present();
   }
 
-  async presentAlertPrompt() {
+  async presentAddAlertPrompt() {
     const alert = await this.alertController.create({
       cssClass: 'grocery-item-prompt',
       header: 'Add Grocery Item',
@@ -69,7 +60,7 @@ export class Tab1Page {
         }, {
           text: 'Ok',
           handler: item => {
-            this.items.push(item)
+            this.groceries.addItem(item);
 
             let message: string = `Item ${item.name} was added......`;
             this.presentToast(message);
@@ -81,14 +72,61 @@ export class Tab1Page {
     await alert.present();
   }
 
-  removeItem(item, index) {
-    this.items.splice(index, 1)
+  async presentEditAlertPrompt(item, index) {
+    const alert = await this.alertController.create({
+      cssClass: 'grocery-item-prompt',
+      header: 'Edit Grocery Item',
+      message: "Edit the values for a Grocery Item....",
+      inputs: [
+        {
+          name: 'name',
+          type: 'text',
+          placeholder: 'Name',
+          value: item.name
+        },
+        {
+          name: "quantity",
+          type: "number",
+          placeholder: "Quantity",
+          value: item.quantity,
+          min: 1
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            
+          }
+        }, {
+          text: 'Ok',
+          handler: item => {
+            this.groceries.editItem(item, index);
+          }
+        }
+      ]
+    });
 
-    let message: string = `Item ${index} was deleted......`;
+    await alert.present();
+  }
+
+  removeItem(item, index) {
+    this.groceries.deletItem(index);
+
+    let message: string = `Item ${item.name} was deleted......`;
     this.presentToast(message);
   }
 
   addItem(){
-    this.presentAlertPrompt();
+    this.presentAddAlertPrompt();
+  }
+
+  editItem(item, index) {
+    this.presentEditAlertPrompt(item, index);
+    
+    let message: string = `Item ${item.name} was edited......`;
+    this.presentToast(message);
   }
 }

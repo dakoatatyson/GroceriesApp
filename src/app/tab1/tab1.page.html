@@ -5,8 +5,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <h3 class="ion-text-center" *ngIf="loadItems().length === 0">No Grocery Items.....</h3>
+
   <ion-list>
-    <ion-item-sliding *ngFor="let item of items let i = index">
+    <ion-item-sliding *ngFor="let item of loadItems() let i = index">
       <ion-item>
         <ion-grid>
           <ion-row>
@@ -21,9 +23,11 @@
       </ion-item>
 
       <ion-item-options side="end">
+        <ion-item-option (click)="editItem(item, i)" color="primary">
+          <ion-icon name="create-outline" size="large"></ion-icon>
+        </ion-item-option>
         <ion-item-option (click)="removeItem(item, i)" color="danger">
           <ion-icon name="trash-sharp" size="large"></ion-icon>
-          DELETE
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
