@@ -39,18 +39,18 @@ export class InputDialogService {
             
           }
         }, {
-          text: item? 'Create' : 'Save',
+          text: item? 'Save' : 'Create',
           handler: newItem => {
             let message: string = "";
             if(item !== undefined)
             {
-              this.groceries.editItem(item, index);
+              this.groceries.editItem(newItem, index);
               message = `Item ${item.name} was edited......`;;
             }
             else
             {
               this.groceries.addItem(newItem);
-              message = `Item ${newItem} was added......`;
+              message = `Item ${newItem.name} was added......`;
             }
             this.message.presentToast(message);
           }
