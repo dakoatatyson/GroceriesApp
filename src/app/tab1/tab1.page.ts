@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ToastController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
 import { GroceriesService } from '../groceries.service';
+import { ToastService } from '../toast.service';
+import { InputDialogService } from '../input-dialog.service';
 
 @Component({
   selector: 'app-tab1',
@@ -11,7 +11,7 @@ import { GroceriesService } from '../groceries.service';
 export class Tab1Page {
   title = "Grocery List";
 
-  constructor(public toastController: ToastController, public alertController: AlertController, public groceries:GroceriesService) {}
+  constructor(public groceries:GroceriesService, public message: ToastService, public input: InputDialogService) {}
 
   loadItems() {
     return this.groceries.getItems();
@@ -22,111 +22,21 @@ export class Tab1Page {
     return this.loadItems().length === 0;
   }
 
-  async presentToast(toastMessage) {
-    const toast = await this.toastController.create({
-      message: toastMessage,
-      duration: 3000,
-      position: "bottom"
-    });
-    toast.present();
-  }
-
-  async presentAddAlertPrompt() {
-    const alert = await this.alertController.create({
-      cssClass: 'grocery-item-prompt',
-      header: 'Add Grocery Item',
-      message: "Enter the values for a new Grocery Item....",
-      inputs: [
-        {
-          name: 'name',
-          type: 'text',
-          placeholder: 'Name'
-        },
-        {
-          name: "quantity",
-          type: "number",
-          placeholder: "Quantity",
-          min: 1
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            
-          }
-        }, {
-          text: 'Ok',
-          handler: item => {
-            this.groceries.addItem(item);
-
-            let message: string = `Item ${item.name} was added......`;
-            this.presentToast(message);
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  async presentEditAlertPrompt(item, index) {
-    const alert = await this.alertController.create({
-      cssClass: 'grocery-item-prompt',
-      header: 'Edit Grocery Item',
-      message: "Edit the values for a Grocery Item....",
-      inputs: [
-        {
-          name: 'name',
-          type: 'text',
-          placeholder: 'Name',
-          value: item.name
-        },
-        {
-          name: "quantity",
-          type: "number",
-          placeholder: "Quantity",
-          value: item.quantity,
-          min: 1
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            
-          }
-        }, {
-          text: 'Ok',
-          handler: item => {
-            this.groceries.editItem(item, index);
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
   removeItem(item, index) {
     this.groceries.deletItem(index);
 
     let message: string = `Item ${item.name} was deleted......`;
-    this.presentToast(message);
+    this.message.presentToast(message);
   }
 
   addItem(){
-    this.presentAddAlertPrompt();
+    this.input.presentAlertPrompt();
   }
 
   editItem(item, index) {
-    this.presentEditAlertPrompt(item, index);
+    this.input.presentAlertPrompt(item, index);
     
     let message: string = `Item ${item.name} was edited......`;
-    this.presentToast(message);
+    this.message.presentToast(message);
   }
 }
