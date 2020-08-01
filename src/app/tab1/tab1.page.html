@@ -24,7 +24,10 @@
 
       <ion-item-options side="end">
         <ion-item-option (click)="editItem(item, i)" color="primary">
-          <ion-icon name="create-outline" size="large"></ion-icon>
+          <ion-icon name="pencil-outline" size="large"></ion-icon>
+        </ion-item-option>
+        <ion-item-option (click)="shareItem(item, i)" color="secondary">
+          <ion-icon name="share-outline" size="large"></ion-icon>
         </ion-item-option>
         <ion-item-option (click)="removeItem(item, i)" color="danger">
           <ion-icon name="trash-sharp" size="large"></ion-icon>

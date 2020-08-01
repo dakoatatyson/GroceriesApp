@@ -29,6 +29,13 @@ export class Tab1Page {
     this.message.presentToast(message);
   }
 
+  shareItem(item, index) {
+    this.groceries.shareItem(index);
+
+    let message: string = `Item ${item.name} was shared......`;
+    this.message.presentToast(message);
+  }
+
   addItem(){
     this.input.presentAlertPrompt();
   }
